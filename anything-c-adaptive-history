@@ -1,3 +1,3 @@
 ;; -*- mode: emacs-lisp -*-
 ;; History entries used for anything adaptive display.
-(setq anything-c-adaptive-history (quote ((command ("column-number-mode" ("number" . 1)) ("display-line-numbers" ("number" . 1)) ("toggle-line-numbers-display" ("toggle-line" . 2)) ("eval-expression" ("eval-exp" . 1)) ("mac-toggle-max-window" ("mac-tog" . 1) ("mac-to" . 1)) ("slime-connect" ("slime-con" . 14) ("slime" . 2)) ("paredit-mode" ("paredit" . 1) ("paredi" . 1)) ("package-install" ("package-insta" . 1) ("package-install" . 1)) ("package-list-packages" ("package-list-" . 1) ("package" . 1)) ("cd" ("cd" . 1))))))
+(setq anything-c-adaptive-history (quote ((command \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\. \.\.\.))))

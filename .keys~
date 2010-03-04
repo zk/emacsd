@@ -10,7 +10,7 @@
 	
 (defun reload-emacs ()
 	(interactive)
-	(load-file "~/.emacs.d/init.el"))
+	(load-file "~/.emacs.d/.emacs"))
 
 
 (defun vi-open-line-above ()
