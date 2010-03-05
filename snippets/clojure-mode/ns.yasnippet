@@ -3,8 +3,8 @@
 # key: ns
 # binding: "keybinding"
 # --
-(ns ${1: mynamespace}
-  (:use [$2])
-  (:import [$3]))
+(ns ${1:`(clojure-namespace-for-buffer)`}
+  (:use $2)
+  (:import $3))
 
 $0

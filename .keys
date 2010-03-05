@@ -118,9 +118,13 @@ With a prefix argument, insert a newline above the current line."
 (define-prefix-command 'emacs-lisp-ops)
 (global-set-key (kbd "C-9") 'emacs-lisp-ops)
 (define-key emacs-lisp-ops (kbd "C-d") 'eval-defun)
-(define-key emacs-lisp-ops (kbd "C-r") 'reload-keys)
-(define-key emacs-lisp-ops (kbd "C-e") 'reload-emacs)
+(define-key emacs-lisp-ops (kbd "C-e") 'eval-buffer)
+(define-key emacs-lisp-ops (kbd "C-r") 'eval-defun)
 (define-key emacs-lisp-ops (kbd "C-w") 'my-theme-cycle)
+(define-key emacs-lisp-ops (kbd "C-k") 'reload-keys)
+(define-key emacs-lisp-ops (kbd "C-m") 'reload-emacs)
+
+
 
 ;Project
 (define-prefix-command 'project-opts)

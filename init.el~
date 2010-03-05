@@ -72,21 +72,34 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-;; YA Snippet
+;;{{{ YA Snippet
 (require 'yasnippet-bundle)
 (setq yas/root-directory "~/.emacs.d/snippets/")
 (yas/load-directory yas/root-directory)
+(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
 
+(defun yas/advise-indent-function (function-symbol)
+  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
+           ,(format
+             "Try to expand a snippet before point, then call `%s' as usual"
+             function-symbol)
+           (let ((yas/fallback-behavior nil))
+             (unless (and (interactive-p)
+                          (yas/expand))
+               ad-do-it)))))
+
+(yas/advise-indent-function 'indent-or-expand)
+;;}}}
 
 ;;{{{ autosave
 
 ;; keep autosaved and backup files inc one place
 (defvar autosave-dir
- (concat emacs-root "autosave/autosaved/"))
+  (concat emacs-root "autosave/autosaved/"))
 (defvar backup-dir
   (concat emacs-root "autosave/backups/"))
 (append-to-load-path "autosave")
-;(require 'autosave_config)
+					;(require 'autosave_config)
 
 ;;}}}
 

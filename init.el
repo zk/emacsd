@@ -89,6 +89,21 @@
                ad-do-it)))))
 
 (yas/advise-indent-function 'indent-or-expand)
+
+(defun clojure-namespace-clean-extension (path-part)
+  (car (split-string path-part "\\." t)))
+
+(defun clojure-namspace-take-while-not-found (col accu match)
+  (if (string= (car col) match)
+    accu
+    (clojure-namespace-take-while-not-found (cdr col) (cons (car col) accu) match)))
+
+(defun clojure-namespace-for-buffer ()
+  "Returns a string representing the guessed clojure namespace for the current buffer.
+   i.e. /path/to/src/com/napplelabs/stuff.clj -> 'com.napplelabs.stuff'"
+  (let ((parts (reverse (split-string (buffer-file-name) "/" t))))
+    (let ((col (reverse (take-while-not-found parts () "src"))))
+      (mapconcat 'identity (reverse (cons (clojure-namespace-clean-extension (car col)) (cdr col))) "."))))
 ;;}}}
 
 ;;{{{ autosave

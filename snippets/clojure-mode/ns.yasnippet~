@@ -1,6 +1,10 @@
 # -*- mode: snippet -*-
 # name: ns
-# key: 
+# key: ns
 # binding: "keybinding"
-# expand-env: ((some-var some-value))
 # --
+(ns ${1: mynamespace}
+  (:use [$2])
+  (:import [$3]))
+
+$0
