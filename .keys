@@ -1,3 +1,5 @@
+;-*-Emacs-Lisp-*-
+
 ;(setq mac-option-modifier 'alt)
 
 ;; Delete selection mode -- Treats selection like programs other than emacs
@@ -55,6 +57,9 @@ With a prefix argument, insert a newline above the current line."
 ;(global-set-key (kbd "C-.") 'increase-left-margin)
 ;(global-set-key (kbd "C-,") 'decrease-left-margin)
 
+
+;Project Ops
+(global-set-key (kbd "C-s-t") 'find-file-in-project)
 
 
 
@@ -135,3 +140,4 @@ With a prefix argument, insert a newline above the current line."
   (interactive)
   (shell-command "open http://localhost:8080")) 
 
+(global-set-key (kbd "C-\\") 'indent-region)

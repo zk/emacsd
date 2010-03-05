@@ -1,3 +1,5 @@
+;-*-Emacs-Lisp-*-
+
 ;(setq mac-option-modifier 'alt)
 
 ;; Delete selection mode -- Treats selection like programs other than emacs
@@ -10,7 +12,7 @@
 	
 (defun reload-emacs ()
 	(interactive)
-	(load-file "~/.emacs.d/.emacs"))
+	(load-file "~/.emacs.d/init.el"))
 
 
 (defun vi-open-line-above ()
@@ -135,3 +137,4 @@ With a prefix argument, insert a newline above the current line."
   (interactive)
   (shell-command "open http://localhost:8080")) 
 
+(global-set-key (kbd "C-\\") 'indent-region)
