@@ -16,7 +16,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/plugins")
 
-(nconc same-window-buffer-names '("*Apropos*" "*Buffer List*" "*Help*"))
+(nconc same-window-buffer-names '("*Apropos*" "*Buffer List*" "*Help*" "*anything*"))
 
 ;; ElDoc (shows parameter list for function call currently editing)
 (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
@@ -288,3 +288,8 @@
 
 ;; Emacs Client Setup
 (server-start)
+
+;; Show Paren Mode
+(add-hook 'clojure-mode-hook 'show-paren-mode)
+(setq show-paren-style 'expression)
+(set-face-background 'show-paren-match-face "#333333")
