@@ -59,8 +59,8 @@
 ;; {{{ Color Theme
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-charcoal-black)
-;; (color-theme-billw)
+;; (color-theme-charcoal-black)
+(color-theme-billw)
 ;; (color-theme-clarity-and-beauty)
 ;; (color-theme-cooper-dark)
 ;; (color-theme-scintilla)
@@ -282,8 +282,8 @@
            (unless selective-display
              (1+ (current-column))))))
 
-(set-face-attribute 'default nil :height 150)
 (set-default-font "Inconsolata")
+(set-face-attribute 'default nil :height 150)
 (ns-toggle-fullscreen)
 
 ;; Emacs Client Setup
