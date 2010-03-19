@@ -980,6 +980,7 @@ Includes faces for font-lock, widget, custom, speedbar."
      (show-paren-match-face ((t (:background "light blue"))))
      (show-paren-mismatch-face ((t (:foreground "white" :background "purple")))))))
 
+;; Modified zkim March 2010
 (defun color-theme-billw ()
   "Cornsilk on black.
 Includes info, diary, font-lock, eshell, sgml, message, gnus,
@@ -988,13 +989,15 @@ widget, custom, latex, ediff."
   (color-theme-install
    '(color-theme-billw
      ((foreground-color . "cornsilk")
-      (background-color . "black")
+      (background-color . "#222222")
       (mouse-color . "black")
       (cursor-color . "white")
       (border-color . "black")
       (background-mode . dark))
      (default ((t (nil))))
+;;     (modeline ((t (:foreground "wheat" :background "black"))))
      (modeline ((t (:foreground "black" :background "wheat"))))
+;;     (modeline-buffer-id ((t (:foreground "white" :background "black"))))
      (modeline-buffer-id ((t (:foreground "black" :background "wheat"))))
      (modeline-mousable ((t (:foreground "black" :background "wheat"))))
      (modeline-mousable-minor-mode ((t (:foreground "black" :background "wheat"))))
@@ -1013,11 +1016,14 @@ widget, custom, latex, ediff."
      (holiday-face ((t (:background "red"))))
      (show-paren-match-face ((t (:background "deepskyblue4"))))
      (show-paren-mismatch-face ((t (:foreground "white" :background "red"))))
-     (font-lock-comment-face ((t (:foreground "gold"))))
-     (font-lock-string-face ((t (:foreground "orange"))))
+     (font-lock-comment-face ((t (:foreground "orange"))))
+;;     (font-lock-comment-face ((t (:foreground "gold"))))
+     (font-lock-string-face ((t (:foreground "lightsalmon"))))
+;;     (font-lock-string-face ((t (:foreground "orange"))))
      (font-lock-keyword-face ((t (:foreground "cyan1"))))
      (font-lock-builtin-face ((t (:foreground "LightSteelBlue"))))
-     (font-lock-function-name-face ((t (:foreground "mediumspringgreen"))))
+     (font-lock-function-name-face ((t (:foreground "gold"))))
+;;     (font-lock-function-name-face ((t (:foreground "mediumspringgreen"))))
      (font-lock-variable-name-face ((t (:foreground "light salmon"))))
      (font-lock-type-face ((t (:foreground "yellow1"))))
      (font-lock-constant-face ((t (:foreground "salmon"))))

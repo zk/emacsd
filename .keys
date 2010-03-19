@@ -56,6 +56,10 @@ With a prefix argument, insert a newline above the current line."
 ;(global-set-key (kbd "C-c C-w") 'mark-word)
 ;(global-set-key (kbd "C-.") 'increase-left-margin)
 ;(global-set-key (kbd "C-,") 'decrease-left-margin)
+(define-key ctl-x-map (kbd "C-y") 'anything-show-kill-ring)
+(define-key mode-specific-map (kbd "h") 'hs-hide-all)
+(define-key mode-specific-map (kbd "s") 'hs-show-all)
+
 
 
 ;Project Ops
@@ -68,9 +72,14 @@ With a prefix argument, insert a newline above the current line."
 ;(define-prefix-command 'window-ops)
 ;(global-set-key (kbd "C-w") 'window-ops)
 ;(define-key window-ops (kbd "k") 'windmove-up)
-;(define-key window-ops (kbd "j") 'windmove-down)
+;(define-key window-ops (kbpd "j") 'windmove-down)
 ;(define-key window-ops (kbd "h") 'windmove-left)
 ;(define-key window-ops (kbd "l") 'windmove-right)
+(global-set-key (kbd "s-w") 'other-window)
+(global-set-key (kbd "s-1") 'delete-other-windows)
+(global-set-key (kbd "s-2") 'split-window-vertically)
+(global-set-key (kbd "s-3") 'split-window-horizontally)
+(global-set-key (kbd "s-0") 'delete-window)
 
 ;; Movement
 ;(define-prefix-command 'text-movement)
@@ -84,6 +93,7 @@ With a prefix argument, insert a newline above the current line."
 ;(global-set-key (kbd "A-C-k") 'previous-line)
 ;(global-set-key (kbd "C-n") 'scroll-up)
 ;(global-set-key (kbd "C-u") 'scroll-down)
+;(global-set-key (kbd "C-a") 'back-to-indentation)
 
 ;Smooth Mouse Scrolling
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))) ;; one line at a time
@@ -114,7 +124,7 @@ With a prefix argument, insert a newline above the current line."
 ;(global-set-key (kbd "A-o") 'scroll-down)
 ;(global-set-key (kbd "A-l") 'scroll-up)
 (global-set-key (kbd "s-r") 'slime-eval-defun)
-;(global-set-key (kbd "C-o") 'vi-open-line-below)
+(global-set-key (kbd "C-o") 'vi-open-line-below)
 (define-prefix-command 'emacs-lisp-ops)
 (global-set-key (kbd "C-9") 'emacs-lisp-ops)
 (define-key emacs-lisp-ops (kbd "C-d") 'eval-defun)
@@ -124,8 +134,6 @@ With a prefix argument, insert a newline above the current line."
 (define-key emacs-lisp-ops (kbd "C-k") 'reload-keys)
 (define-key emacs-lisp-ops (kbd "C-m") 'reload-emacs)
 
-
-
 ;Project
 (define-prefix-command 'project-opts)
 (global-set-key (kbd "C-0") 'project-opts)
@@ -133,6 +141,7 @@ With a prefix argument, insert a newline above the current line."
 (define-key project-opts (kbd "C-o") 'open-firefox)
 (define-key project-opts (kbd "C-r") 'slime-eval-buffer)
 (global-set-key (kbd "s-r") 'slime-eval-defun)
+(global-set-key (kbd "s-SPC") 'anything)
 
 (defun exec-and-open-firefox ()
   (interactive)
@@ -145,3 +154,6 @@ With a prefix argument, insert a newline above the current line."
   (shell-command "open http://localhost:8080")) 
 
 (global-set-key (kbd "C-\\") 'indent-region)
+
+;; Paredit
+(define-key paredit-mode-map (kbd "C-w") 'paredit-backward-kill-word)
