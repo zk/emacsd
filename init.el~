@@ -256,6 +256,9 @@
 ;;Paredit
 (require 'paredit)
 
+(load-file "~/.emacs.d/.keys")
+
+
 ;; Temp Files
 (defvar user-temporary-file-directory
   (concat temporary-file-directory user-login-name "/"))
@@ -348,7 +351,3 @@
      	  (lambda () (rinari-launch)))
 
 (setq rinari-tags-file-name "TAGS")
-
-(load-file "~/.emacs.d/.keys")
-
-

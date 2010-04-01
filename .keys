@@ -60,8 +60,6 @@ With a prefix argument, insert a newline above the current line."
 (define-key mode-specific-map (kbd "h") 'hs-hide-all)
 (define-key mode-specific-map (kbd "s") 'hs-show-all)
 
-
-
 ;Project Ops
 (global-set-key (kbd "C-s-t") 'find-file-in-project)
 
@@ -119,6 +117,12 @@ With a prefix argument, insert a newline above the current line."
 (add-hook 'emacs-lisp-mode-hook 'my-tab-fix)
 (add-hook 'fundamental-mode-hook 'my-tab-fix)
 (add-hook 'clojure-mode-hook 'my-tab-fix)
+(add-hook 'ruby-mode 'my-tab-fix)
+(add-hook 'rhtml-mode 'my-tab-fix)
+
+(define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
+
+(global-set-key (kbd "s-/") 'indent-or-expand)
 
 
 ;(global-set-key (kbd "A-o") 'scroll-down)
@@ -157,3 +161,14 @@ With a prefix argument, insert a newline above the current line."
 
 ;; Paredit
 (define-key paredit-mode-map (kbd "C-w") 'paredit-backward-kill-word)
+
+(define-key rhtml-mode-map (kbd "<RET>") 'newline-and-indent)
+(define-key ruby-mode-map (kbd "<RET>") 'newline-and-indent)
+;(define-key css-mode-map (kbd "<RET>") 'newline-and-indent)
+
+(defun run-ruby-file ()
+  (interactive)
+  (compile (concat "ruby -w " buffer-file-name)))
+
+(define-key ruby-mode-map (kbd "s-r") 'run-ruby-file)
+
