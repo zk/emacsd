@@ -351,4 +351,4 @@
 
 (load-file "~/.emacs.d/.keys")
 
-
+(require 'markdown-mode)
