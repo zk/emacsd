@@ -234,6 +234,10 @@
 (require 'clojure-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight)
 (add-hook 'clojure-mode-hook 'paredit-mode)
+
+(add-hook 'slime-connected-hook (lambda ()
+                                  (interactive)
+                                  (slime-redirect-inferior-output)))
 ;;}}}
 
 ;; Yegge Stuff http://steve.yegge.googlepages.com/effective-emacs
@@ -306,8 +310,8 @@
 (server-start)
 
 ;; Show Paren Mode
-(add-hook 'clojure-mode-hook 'show-paren-mode)
 (setq show-paren-style 'expression)
+(add-hook 'clojure-mode-hook 'show-paren-mode)
 (defun set-show-paren-face-background ()
   (set-face-background 'show-paren-match-face "#333333"))
 (add-hook 'show-paren-mode-hook 'set-show-paren-face-background)
