@@ -234,10 +234,6 @@
 (require 'clojure-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight)
 (add-hook 'clojure-mode-hook 'paredit-mode)
-
-(add-hook 'slime-connected-hook (lambda ()
-                                  (interactive)
-                                  (slime-redirect-inferior-output)))
 ;;}}}
 
 ;; Yegge Stuff http://steve.yegge.googlepages.com/effective-emacs
@@ -356,3 +352,5 @@
 (load-file "~/.emacs.d/.keys")
 
 (require 'markdown-mode)
+
+(require 'yaml-mode)
