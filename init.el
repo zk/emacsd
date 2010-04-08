@@ -376,6 +376,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ecb-layout-window-sizes (quote (("left8" (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.22448979591836735) (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.1836734693877551)))))
  '(ecb-options-version "2.40"))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
