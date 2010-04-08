@@ -116,9 +116,10 @@
 (setq org-log-done t)
 
 (setq journal-root-dir "/Users/zkim/Dropbox/org/")
+(defun today-file-name () (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org"))
 (defun today-org ()
   (interactive)
-  (let ((today (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org")))
+  (let ((today (today-file-name)))
     (if (file-exists-p today)
 	(find-file-existing today)
 	(with-temp-buffer
@@ -349,8 +350,36 @@
 
 (setq rinari-tags-file-name "TAGS")
 
-(load-file "~/.emacs.d/.keys")
-
 (require 'markdown-mode)
 
 (require 'yaml-mode)
+
+(load-file "~/.emacs.d/plugins/cedet/common/cedet.el")
+(global-ede-mode t)
+(semantic-load-enable-minimum-features)
+(require 'semantic-ia)
+
+(add-to-list 'load-path "~/.emacs.d/plugins/ecb240")
+(require 'ecb)
+(require 'ecb-autoloads)
+(setq ecb-tip-of-the-day nil)
+(ecb-activate)
+
+(setq inhibit-startup-screen t)
+(today-org)
+(setq initial-buffer-choice (today-file-name))
+
+(load-file "~/.emacs.d/.keys")
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(ecb-options-version "2.40"))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
