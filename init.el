@@ -115,7 +115,7 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-(setq journal-root-dir "/Users/zkim/org/")
+(setq journal-root-dir "/Users/zkim/Dropbox/org/")
 (defun today-org ()
   (interactive)
   (let ((today (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org")))
