@@ -234,7 +234,7 @@
 ;;{{{ Clojure Mode
 (require 'clojure-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight)
-(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'activate-paredit-mode)
 ;;}}}
 
 ;; Yegge Stuff http://steve.yegge.googlepages.com/effective-emacs
