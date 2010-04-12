@@ -122,11 +122,11 @@
   (let ((today (today-file-name)))
     (if (file-exists-p today)
 	(find-file-existing today)
-	(with-temp-buffer
-	  (insert "* Tasks\n\n* Journal\n\n* Notes")
-	  (when (file-writable-p today)
-	    (write-region (point-min) (point-max) today))
-	  (find-file-existing today)))))
+      (with-temp-buffer
+	(insert "* Tasks\n\n* Journal\n\n* Notes")
+	(when (file-writable-p today)
+	  (write-region (point-min) (point-max) today))
+	(find-file-existing today)))))
 ;; }}}
 
 ;; YA Snippet {{{
@@ -234,7 +234,7 @@
 ;;{{{ Clojure Mode
 (require 'clojure-mode)
 (add-hook 'clojure-mode-hook 'idle-highlight)
-(add-hook 'clojure-mode-hook 'activate-paredit-mode)
+(add-hook 'clojure-mode-hook 'enable-paredit-mode)
 ;;}}}
 
 ;; Yegge Stuff http://steve.yegge.googlepages.com/effective-emacs
