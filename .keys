@@ -121,6 +121,8 @@ With a prefix argument, insert a newline above the current line."
 (add-hook 'rhtml-mode 'my-tab-fix)
 
 (define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
+(define-key clojure-mode-map (kbd "s-t") 'slime-clojure-run-tests)
+
 
 (global-set-key (kbd "s-/") 'indent-or-expand)
 
