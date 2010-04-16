@@ -117,6 +117,7 @@
 
 (setq journal-root-dir "/Users/zkim/Dropbox/org/")
 (defun today-file-name () (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org"))
+
 (defun today-org ()
   (interactive)
   (let ((today (today-file-name)))
@@ -308,7 +309,10 @@
 
 ;; Show Paren Mode
 (setq show-paren-style 'expression)
-(add-hook 'clojure-mode-hook 'show-paren-mode)
+(add-hook 'clojure-mode-hook 'enable-show-paren-mode)
+(defun enable-show-paren-mode ()
+  (interactive)
+  (show-paren-mode t))
 (defun set-show-paren-face-background ()
   (set-face-background 'show-paren-match-face "#333333"))
 (add-hook 'show-paren-mode-hook 'set-show-paren-face-background)
