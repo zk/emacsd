@@ -383,7 +383,6 @@
   ;; If there is more than one, they won't work right.
  )
 
-
 ;; Clojure run test
 (defun run-tests-for-namespace (ns)
   )
@@ -392,5 +391,6 @@
   (interactive)
   (slime-interactive-eval "(run-tests)"))
 
-(load-file "~/.emacs.d/.keys")
+(require 'goto-last-change)
 
+(load-file "~/.emacs.d/.keys")
