@@ -42,37 +42,41 @@
 
 ;;; Code:
 
+;; (defvar anything-c-source-eproject-files
+;;   '((name . "Files in eProject")
+;;     (init . (lambda () (if (buffer-file-name)
+;; 			   (setq anything-eproject-root-dir (eproject-maybe-turn-on))
+;; 			 (setq anything-eproject-root-dir 'nil)
+;; 			 )))
+;;     (candidates . (lambda () (if anything-eproject-root-dir
+;; 				 (eproject-list-project-files anything-eproject-root-dir))))
+;;     (type . file)
+;;     )
+;;   "Search for files in the current eProject.")
+
 (defvar anything-c-source-eproject-files
   '((name . "Files in eProject")
-    (init . anything-c-source-eproject-files-init)
-    (candidates-in-buffer)
+    (init . (lambda () (if (buffer-file-name)
+			   (setq anything-eproject-root-dir (eproject-maybe-turn-on))
+			 (setq anything-eproject-root-dir 'nil)
+			 )))
+    (candidates . (lambda () (if anything-eproject-root-dir
+				 (eproject-list-project-files anything-eproject-root-dir))))
     (type . file)
-    (real-to-display . (lambda (real)
-                         (if real
-                             (cadr (split-string real
-                                                 (concat
-                                                  (expand-file-name (cadr prj-current)) "/")))))))
+    )
   "Search for files in the current eProject.")
 
-(defun anything-c-source-eproject-files-init ()
-  "Build `anything-candidate-buffer' of eproject files."
-  (with-current-buffer (anything-candidate-buffer 'local)
-    (mapcar
-     (lambda (item)
-       (insert (format "%s/%s\n" (cadr prj-current) (car item))))
-     prj-files)))
-
-(defvar anything-c-source-eproject-projects
-  '((name . "Projects")
-    (candidates . (lambda ()
-                    (mapcar (lambda (item)
-                              (car item))
-                            prj-list)))
-    (action ("Open Project" . (lambda (cand)
-                                (eproject-open cand)))
-            ("Close projcet" . (lambda (cand)
-                                 (eproject-close)))))
-  "Open or close eProject projects.")
+(defvar anything-c-source-eproject-buffers
+  '((name . "Buffers in this eProject")
+    (init . (lambda () (if (buffer-file-name)
+			   (setq anything-eproject-root-dir (eproject-maybe-turn-on))
+			 (setq anything-eproject-root-dir 'nil))))
+    (candidates . (lambda () (if anything-eproject-root-dir
+				 (mapcar ’buffer-name  ( cdr  (assoc anything-eproject-root-dir (eproject—project-buffers)))))))
+    (volatile)
+    (type . buffer)
+    )
+  "Search for buffers in this project.")
 
 (provide 'anything-eproject)
 

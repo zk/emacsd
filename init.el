@@ -4,11 +4,8 @@
 (defun append-to-load-path (path-element)
   (add-to-list 'load-path (concat emacs-root path-element)))
 
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
+
+;; ELPA
 (when
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
@@ -18,46 +15,32 @@
 
 (nconc same-window-buffer-names '("*Apropos*" "*Buffer List*" "*Help*" "*anything*"))
 
-;; ElDoc (shows parameter list for function call currently editing)
-(add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
-
-;; Javadoc-Help (http://javadochelp.sourceforge.net/)
+;; Imports
+(require 'color-theme)
 (require 'javadoc-help)
+(require 'line-num)                 ; line numbers in left margin
+(require 'ido)                      ; Fun stuff that happens in bottom bar
+(require 'find-file-in-project)     ; find file in project
+(require 'eproject)
+(require 'eproject-extras)
+(require 'anything-eproject)
+(require 'anything-match-plugin)
+(require 'anything)
+(require 'anything-config)
+(require 'idle-highlight)
+(require 'nxml-mode)
+(require 'paredit)
+(require 'yasnippet-bundle)
+(require 'clojure-mode)
 
-(require 'line-num)
+;; TODELETE: (require 'project-buffer-mode) 
 
-(require 'ido)
-(ido-mode t)
-(setq ido-enable-flex-matching t) ;; enable fuzzy matching
-
-(require 'project-buffer-mode)
-
-(setq ido-execute-command-cache nil)
-(defun ido-execute-command ()
-  (interactive)
-  (call-interactively
-   (intern
-    (ido-completing-read
-     "M-x "
-     (progn
-       (unless ido-execute-command-cache
-	 (mapatoms (lambda (s)
-		     (when (commandp s)
-		       (setq ido-execute-command-cache
-			     (cons (format "%S" s) ido-execute-command-cache))))))
-       ido-execute-command-cache)))))
-
-(add-hook 'ido-setup-hook
-	  (lambda ()
-	    (setq ido-enable-flex-matching t)
-	    (global-set-key "\M-x" 'ido-execute-command)))
-
-
+;; Appearance
+;;; Transparency
 (set-frame-parameter (selected-frame) 'alpha '(96 50))
 (add-to-list 'default-frame-alist '(alpha 96 50))
 
-;; {{{ Color Theme
-(require 'color-theme)
+;;; Color Theme
 (color-theme-initialize)
 ;; (color-theme-charcoal-black)
 (color-theme-billw)
@@ -106,157 +89,40 @@
 (global-set-key [f12] 'my-theme-cycle)
 
 
-;; }}}
+;; General Editing Features {
 
-;; Org Stuff {{{
-(require 'org-install)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(setq org-log-done t)
+;; Emacs Client Setup
+(server-start)
 
-(setq journal-root-dir "/Users/zkim/Dropbox/org/")
-(defun today-file-name () (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org"))
-
-(defun today-org ()
+;; IDO
+(ido-mode t)
+(setq ido-enable-flex-matching t)   ; enable fuzzy matching
+(setq ido-execute-command-cache nil)
+(defun ido-execute-command ()
   (interactive)
-  (let ((today (today-file-name)))
-    (if (file-exists-p today)
-	(find-file-existing today)
-      (with-temp-buffer
-	(insert "* Tasks\n\n* Journal\n\n* Notes")
-	(when (file-writable-p today)
-	  (write-region (point-min) (point-max) today))
-	(find-file-existing today)))))
-;; }}}
+  (call-interactively
+   (intern
+    (ido-completing-read
+     "M-x "
+     (progn
+       (unless ido-execute-command-cache
+	 (mapatoms (lambda (s)
+		     (when (commandp s)
+		       (setq ido-execute-command-cache
+			     (cons (format "%S" s) ido-execute-command-cache))))))
+       ido-execute-command-cache)))))
 
-;; YA Snippet {{{
-(require 'yasnippet-bundle)
-(setq yas/root-directory "~/.emacs.d/snippets/")
-(yas/load-directory yas/root-directory)
-(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
+(add-hook 'ido-setup-hook
+	  (lambda ()
+	    (setq ido-enable-flex-matching t)
+	    (global-set-key "\M-x" 'ido-execute-command)))
 
-(defun yas/advise-indent-function (function-symbol)
-  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
-           ,(format
-             "Try to expand a snippet before point, then call `%s' as usual"
-             function-symbol)
-           (let ((yas/fallback-behavior nil))
-             (unless (and (interactive-p)
-                          (yas/expand))
-               ad-do-it)))))
-
-(yas/advise-indent-function 'indent-or-expand)
-
-(defun clojure-namespace-clean-extension (path-part)
-  (car (split-string path-part "\\." t)))
-
-(defun clojure-namespace-take-while-not-found (col accu match)
-  (if (string= (car col) match)
-      accu
-    (clojure-namespace-take-while-not-found (cdr col) (cons (car col) accu) match)))
-
-(defun clojure-namespace-for-buffer ()
-  "Returns a string representing the guessed clojure namespace for the current buffer.
-   i.e. /path/to/src/com/napplelabs/stuff.clj -> 'com.napplelabs.stuff'"
-  (let ((parts (reverse (split-string (buffer-file-name) "/" t))))
-    (let ((col (reverse (clojure-namespace-take-while-not-found parts () "src"))))
-      (mapconcat 'identity (reverse (cons (clojure-namespace-clean-extension (car col)) (cdr col))) "."))))
-;;}}}
-
-;;{{{ autosave
-
-;; keep autosaved and backup files inc one place
+;; Autosave - keep autosaved and backup files inc one place {
 (defvar autosave-dir
   (concat emacs-root "autosave/autosaved/"))
 (defvar backup-dir
   (concat emacs-root "autosave/backups/"))
 (append-to-load-path "autosave")
-					;(require 'autosave_config)
-
-;;}}}
-
-;; SCALA!
-(append-to-load-path "plugins/scala-mode")
-(require 'scala-mode)
-(setq auto-mode-alist (cons '("\\.scala$" . scala-mode) auto-mode-alist))
-(load-file (concat emacs-root "plugins/sbt.el"))
-(setq compilation-scroll-output t)
-(setq compilation-auto-jump-to-first-error t)
-(add-hook 'scala-mode-hook
-          '(lambda ()
-             (yas/minor-mode-on)))
-
-;;Shell
-(ansi-color-for-comint-mode-on)
-
-;;find file in project
-(require 'find-file-in-project)
-
-;;eproject
-(require 'eproject)
-(require 'eproject-extras)
-(define-project-type git (generic)
-  (look-for ".git")
-  :relavent-files (".*"))
-(require 'anything-eproject)
-
-;; Window Stuff
-(winner-mode 1)
-
-;; Anything
-(require 'anything)
-(require 'anything-config)
-
-(setq anything-sources
-      (list
-       anything-c-source-buffers+
-       anything-c-source-file-name-history
-       anything-c-source-locate
-       anything-c-source-emacs-commands
-       ))
-
-(defun buffers-and-files-anything ()
-  (interactive)
-  (anything-other-buffer
-   '(anything-c-source-buffers
-     anything-c-source-file-name-history
-     anything-c-source-info-pages
-     anything-c-source-info-elisp
-     anything-c-source-man-pages
-     anything-c-source-locate
-     anything-c-source-emacs-commands)
-   " *buffers-and-files-anything*"))
-
-
-;; Idle Hightlight
-(require 'idle-highlight)
-
-;;{{{ Clojure Mode
-(require 'clojure-mode)
-(add-hook 'clojure-mode-hook 'idle-highlight)
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
-;;}}}
-
-;; Yegge Stuff http://steve.yegge.googlepages.com/effective-emacs
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-					;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-					;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-;; NXML
-(require 'nxml-mode)
-
-;;Highlight Color
-(set-face-background 'region "blue") ; Set region background color 
-
-;; Hi-line (highlights current line)
-;; (global hi-line 1)
-
-;;Paredit
-(require 'paredit)
 
 ;; Temp Files
 (defvar user-temporary-file-directory
@@ -278,9 +144,131 @@
 					;(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 
+;; eproject
+(define-project-type lein (generic)
+  (look-for "project.clj")
+  :relavent-files (".*"))
+
+(define-project-type git (generic)  ; Any dir with a .git directory
+  (look-for ".git")
+  :relavent-files (".*"))
+
+;; Anything
+
+(setq anything-sources
+      (list
+       anything-c-source-buffers+
+       anything-c-source-file-name-history
+;       anything-c-source-eproject-buffers
+       anything-c-source-eproject-files
+       ))
+
+(defun buffers-and-files-anything ()
+  (interactive)
+  (anything-other-buffer
+   '(anything-c-source-buffers
+     anything-c-source-file-name-history
+     anything-c-source-info-pages
+     anything-c-source-info-elisp
+     anything-c-source-man-pages
+     anything-c-source-locate
+     anything-c-source-emacs-commands)
+   " *buffers-and-files-anything*"))
+
+(set-face-background 'region "blue") ; Set region background color 
+
+;; }
+
+
+;; Languages
+
+;; Emacs Lisp {
+(add-hook 'emacs-lisp-mode 'turn-on-eldoc-mode)  ; Eldoc (lisp param list)
+;; }
+
+;; Clojure {
+(add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)   ; Eldoc (lisp param list)
+(add-hook 'clojure-mode-hook 'idle-highlight)
+(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+;(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
+;; }
+
+;; Org Stuff {
+(require 'org-install)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+(setq journal-root-dir "/Users/zkim/Dropbox/org/")
+(defun today-file-name () (concat journal-root-dir (format-time-string "%Y-%m-%d") ".org"))
+
+(defun today-org ()
+  (interactive)
+  (let ((today (today-file-name)))
+    (if (file-exists-p today)
+	(find-file-existing today)
+      (with-temp-buffer
+	(insert "* Tasks\n\n* Journal\n\n* Notes")
+	(when (file-writable-p today)
+	  (write-region (point-min) (point-max) today))
+	(find-file-existing today)))))
+;; }
+
+;;; YA Snippet {{{
+;(setq yas/root-directory "~/.emacs.d/snippets/")
+;(yas/load-directory yas/root-directory)
+
+;; (defun yas/advise-indent-function (function-symbol)
+;;   (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
+;;            ,(format
+;;              "Try to expand a snippet before point, then call `%s' as usual"
+;;              function-symbol)
+;;            (let ((yas/fallback-behavior nil))
+;;              (unless (and (interactive-p)
+;;                           (yas/expand))
+;;                ad-do-it)))))
+
+;; (yas/advise-indent-function 'indent-or-expand)
+
+;; (defun clojure-namespace-clean-extension (path-part)
+;;   (car (split-string path-part "\\." t)))
+
+;; (defun clojure-namespace-take-while-not-found (col accu match)
+;;   (if (string= (car col) match)
+;;       accu
+;;     (clojure-namespace-take-while-not-found (cdr col) (cons (car col) accu) match)))
+
+;; (defun clojure-namespace-for-buffer ()
+;;   "Returns a string representing the guessed clojure namespace for the current buffer.
+;;    i.e. /path/to/src/com/napplelabs/stuff.clj -> 'com.napplelabs.stuff'"
+;;   (let ((parts (reverse (split-string (buffer-file-name) "/" t))))
+;;     (let ((col (reverse (clojure-namespace-take-while-not-found parts () "src"))))
+;;       (mapconcat 'identity (reverse (cons (clojure-namespace-clean-extension (car col)) (cdr col))) "."))))
+;; }}}
+
+
+
+;; SCALA! {
+(append-to-load-path "plugins/scala-mode")
+(require 'scala-mode)
+(setq auto-mode-alist (cons '("\\.scala$" . scala-mode) auto-mode-alist))
+(load-file (concat emacs-root "plugins/sbt.el"))
+(setq compilation-scroll-output t)
+(setq compilation-auto-jump-to-first-error t)
+(add-hook 'scala-mode-hook
+          '(lambda ()
+             (yas/minor-mode-on)))
+;; }
+
+;;Shell
+(ansi-color-for-comint-mode-on)
+
+;; Window Stuff
+(winner-mode 1)
+
 ;; Hide-Show Mode
 (add-hook 'clojure-mode-hook 'hs-minor-mode)
-					;(define-key 'hs-mode-map (kbd "C-+") 'hs-toggle-hiding)
 (global-set-key (kbd "C-=") 'hs-toggle-hiding)
 (global-set-key (kbd "C-+") 'hs-toggle-selective-display)
 
@@ -303,9 +291,6 @@
 (ns-toggle-fullscreen)
 (global-set-key [f11] 'toggle-fullscreen)
 
-
-;; Emacs Client Setup
-(server-start)
 
 ;; Show Paren Mode
 (setq show-paren-style 'expression)
@@ -367,7 +352,7 @@
 (require 'ecb)
 (require 'ecb-autoloads)
 (setq ecb-tip-of-the-day nil)
-(ecb-activate)
+;(ecb-activate)
 
 (setq inhibit-startup-screen t)
 (today-org)
@@ -397,4 +382,15 @@
 
 (require 'goto-last-change)
 
+;; NXHTML
+(load "~/.emacs.d/plugins/nxhtml/autostart.el")
+(require 'mumamo-fun)
+
+(load "~/.emacs.d/plugins/lein.el")
+
+;; Bar Cursor
+(require 'bar-cursor)
+(bar-cursor-mode 1)
+
 (load-file "~/.emacs.d/.keys")
+

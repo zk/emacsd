@@ -146,6 +146,9 @@ With a prefix argument, insert a newline above the current line."
 (define-key project-opts (kbd "C-0") 'anything)
 (define-key project-opts (kbd "C-o") 'open-firefox)
 (define-key project-opts (kbd "C-r") 'slime-eval-buffer)
+(define-key project-opts (kbd "C-s") 'start-lein-swank)
+(define-key project-opts (kbd "C-u") 'start-lein-deps-swank)
+(define-key project-opts (kbd "C-n") 'start-lein-native-deps-swank)
 (global-set-key (kbd "s-r") 'slime-eval-defun)
 (global-set-key (kbd "s-SPC") 'anything)
 
@@ -174,3 +177,5 @@ With a prefix argument, insert a newline above the current line."
 
 (define-key ruby-mode-map (kbd "s-r") 'run-ruby-file)
 
+;; eproject
+(global-set-key (kbd "s-f") 'eproject-find-file)
