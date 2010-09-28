@@ -42,7 +42,7 @@
 
 ;;; Color Theme
 (color-theme-initialize)
-;; (color-theme-charcoal-black)
+;;(color-theme-charcoal-black)
 (color-theme-billw)
 ;; (color-theme-clarity-and-beauty)
 ;; (color-theme-cooper-dark)
@@ -54,7 +54,7 @@
 ;; (color-theme-white-on-grey)
 
 (setq my-color-themes
-      (list 'color-theme-charcoal-black
+      (list ;;'color-theme-charcoal-black
 	    'color-theme-billw
 	    'color-theme-sitaramv-solaris
 	    'color-theme-clarity
@@ -84,7 +84,7 @@
   (message "%S" (car theme-current)))
 
 (setq theme-current my-color-themes)
-(setq color-theme-is-global nil) ; Initialization
+(setq color-theme-is-global t) ; Initialization
 (my-theme-set-default)
 (global-set-key [f12] 'my-theme-cycle)
 
@@ -190,6 +190,11 @@
 (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)   ; Eldoc (lisp param list)
 (add-hook 'clojure-mode-hook 'idle-highlight)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(eval-after-load 'clojure-mode
+  '(define-clojure-indent 
+     (describe 'defun) 
+     (it 'defun)
+     (do-it 'defun)))
 ;(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
 ;; }
 
@@ -363,8 +368,11 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(ecb-layout-window-sizes (quote (("left8" (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.22448979591836735) (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.1836734693877551)))))
- '(ecb-options-version "2.40"))
+ '(ecb-auto-activate t)
+ '(ecb-layout-name "left9")
+ '(ecb-layout-window-sizes (quote (("left9" (0.1870967741935484 . 0.9795918367346939)) ("left8" (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.22448979591836735) (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.1836734693877551)))))
+ '(ecb-options-version "2.40")
+ '(ecb-tree-indent 2))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -378,19 +386,30 @@
 
 (defun slime-clojure-run-tests ()
   (interactive)
-  (slime-interactive-eval "(run-tests)"))
+  (slime-interactive-eval "(clojure.test/run-all-tests #\"cd-analyzer.*test$\")"))
 
 (require 'goto-last-change)
 
 ;; NXHTML
-(load "~/.emacs.d/plugins/nxhtml/autostart.el")
-(require 'mumamo-fun)
+;; (load "~/.emacs.d/plugins/nxhtml/autostart.el")
+;; (require 'mumamo-fun)
 
 (load "~/.emacs.d/plugins/lein.el")
 
 ;; Bar Cursor
 (require 'bar-cursor)
 (bar-cursor-mode 1)
+
+;; clj expression buffer
+(defun copy-expression-to-buffer ()
+  (interactive)
+  (let ((form (slime-defun-at-point)))
+    (setq clj-expression-buffer form))
+  (message "Expression copied to buffer."))
+
+(defun send-expression-in-buffer ()
+  (interactive)
+  (slime-interactive-eval clj-expression-buffer))
 
 (load-file "~/.emacs.d/.keys")
 

@@ -16,10 +16,11 @@
 
 
 
-(defvar lein-cmd-name "lein")
+(defvar lein-cmd-name "export JAVA_OPTS=\"-Xmx512M -Xms512M\"; lein")
 (defvar lein-proc nil)
 (defvar lein-buffer-name "*lein*")
 (defvar lein-timer nil)
+(defvar java-opts "")
 
 (defun lein-connect ()
   (interactive)
@@ -30,8 +31,8 @@
   (set-buffer "*lein*")
   (let ((last-line (first (reverse (remove-if (lambda (x) (string= "" x)) (split-string (buffer-string) "\n"))))))
     (cond ((string= last-line "Process lein exited abnormally with code 1") ((lambda () (message "Couldn't start lein process.") (stop-lein-timer))))
-	  ((string= last-line "     [null] java.net.BindException: Address already in use (NO_SOURCE_FILE:1)") (message "Address already in use."))
-	  ((string= last-line "     [null] #<ServerSocket ServerSocket[addr=localhost/127.0.0.1,port=0,localport=4005]>") (lein-connect)))))
+	  ((string= last-line "java.net.BindException: Address already in use (NO_SOURCE_FILE:1)") (message "Address already in use."))
+	  ((string= last-line "#<ServerSocket ServerSocket[addr=localhost/127.0.0.1,port=0,localport=4005]>") (lein-connect)))))
 
 (defun stop-lein-timer ()
   (cancel-timer lein-timer))

@@ -122,6 +122,7 @@ With a prefix argument, insert a newline above the current line."
 
 (define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
 (define-key clojure-mode-map (kbd "s-t") 'slime-clojure-run-tests)
+(define-key clojure-mode-map (kbd "C-s-<clear>") 'kill-sexp)
 
 
 (global-set-key (kbd "s-/") 'indent-or-expand)
@@ -151,6 +152,9 @@ With a prefix argument, insert a newline above the current line."
 (define-key project-opts (kbd "C-n") 'start-lein-native-deps-swank)
 (global-set-key (kbd "s-r") 'slime-eval-defun)
 (global-set-key (kbd "s-SPC") 'anything)
+(define-key project-opts (kbd "C-e") 'copy-expression-to-buffer)
+(global-set-key (kbd "s-e") 'send-expression-in-buffer)
+
 
 (defun exec-and-open-firefox ()
   (interactive)
@@ -179,3 +183,5 @@ With a prefix argument, insert a newline above the current line."
 
 ;; eproject
 (global-set-key (kbd "s-f") 'eproject-find-file)
+
+
