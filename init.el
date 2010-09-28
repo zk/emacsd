@@ -411,5 +411,7 @@
   (interactive)
   (slime-interactive-eval clj-expression-buffer))
 
+(setq-default indent-tabs-mode nil)
+
 (load-file "~/.emacs.d/.keys")
 
