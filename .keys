@@ -117,12 +117,12 @@ With a prefix argument, insert a newline above the current line."
 (add-hook 'emacs-lisp-mode-hook 'my-tab-fix)
 (add-hook 'fundamental-mode-hook 'my-tab-fix)
 (add-hook 'clojure-mode-hook 'my-tab-fix)
-(add-hook 'ruby-mode 'my-tab-fix)
-(add-hook 'rhtml-mode 'my-tab-fix)
+;;(add-hook 'ruby-mode 'my-tab-fix)
+;;(add-hook 'rhtml-mode 'my-tab-fix)
 
 (define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
 (define-key clojure-mode-map (kbd "s-t") 'slime-clojure-run-tests)
-(define-key clojure-mode-map (kbd "C-s-<clear>") 'kill-sexp)
+;;(define-key clojure-mode-map (kbd "C-s-<clear>") 'kill-sexp)
 
 
 (global-set-key (kbd "s-/") 'indent-or-expand)
@@ -184,4 +184,33 @@ With a prefix argument, insert a newline above the current line."
 ;; eproject
 (global-set-key (kbd "s-f") 'eproject-find-file)
 
+
+;; make cursor movement keys under right hand's home-row.
+(global-set-key (kbd "s-h") 'backward-char) ; was indent-new-comment-line
+(global-set-key (kbd "s-l") 'forward-char)  ; was downcase-word
+(global-set-key (kbd "s-k") 'previous-line) ; was tab-to-tab-stop
+(global-set-key (kbd "s-j") 'next-line) ; was kill-sentence
+
+(global-set-key (kbd "C-M-h") 'backward-word) ; was tab-to-tab-stop
+(global-set-key (kbd "C-M-l") 'forward-word) ; was kill-sentence
+
+(global-set-key (kbd "s-m") 'ido-execute-command) ; was kill-sentence
+
+(global-set-key (kbd "s-p") 'ecb-toggle-ecb-windows)
+(global-set-key (kbd "s-o") 'ecb-toggle-layout)
+
+(global-set-key (kbd "C-w") 'backward-kill-word)
+
+(global-set-key (kbd "M-p") 'fill-paragraph)
+
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "M-p") 'isearch-backward-regexp)
+
+(global-set-key (kbd "C-s-<backspace>") 'backward-word)
+(global-set-key (kbd "C-s-<268632076>") 'forward-word)
+(global-set-key (kbd "C-s-<clear>") 'backward-paragraph)
+(global-set-key (kbd "C-s-<linefeed>") 'forward-paragraph)
+
+(global-set-key (kbd "C-c C-k") 'kill-this-buffer)
+(global-set-key (kbd "C-c k") 'kill-this-buffer)
 

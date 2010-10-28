@@ -12,6 +12,7 @@
   (package-initialize))
 
 (add-to-list 'load-path "~/.emacs.d/plugins")
+(add-to-list 'load-path "~/.emacs.d/plugins/nav")
 
 (nconc same-window-buffer-names '("*Apropos*" "*Buffer List*" "*Help*" "*anything*"))
 
@@ -30,8 +31,10 @@
 (require 'idle-highlight)
 (require 'nxml-mode)
 (require 'paredit)
-(require 'yasnippet-bundle)
+;;(require 'yasnippet-bundle)
 (require 'clojure-mode)
+(require 'nav)
+(require 'sunrise-commander)
 
 ;; TODELETE: (require 'project-buffer-mode) 
 
@@ -269,9 +272,6 @@
 ;;Shell
 (ansi-color-for-comint-mode-on)
 
-;; Window Stuff
-(winner-mode 1)
-
 ;; Hide-Show Mode
 (add-hook 'clojure-mode-hook 'hs-minor-mode)
 (global-set-key (kbd "C-=") 'hs-toggle-hiding)
@@ -368,10 +368,13 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(ecb-auto-activate t)
- '(ecb-layout-name "left9")
+ '(ecb-auto-activate nil)
+ '(ecb-display-default-dir-after-start t)
+ '(ecb-layout-name "left14")
  '(ecb-layout-window-sizes (quote (("left9" (0.1870967741935484 . 0.9795918367346939)) ("left8" (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.22448979591836735) (0.24203821656050956 . 0.2857142857142857) (0.24203821656050956 . 0.1836734693877551)))))
  '(ecb-options-version "2.40")
+ '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
+ '(ecb-tree-buffer-style (quote ascii-guides))
  '(ecb-tree-indent 2))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -412,6 +415,17 @@
   (slime-interactive-eval clj-expression-buffer))
 
 (setq-default indent-tabs-mode nil)
+
+;; Show whitespace
+
+(require 'whitespace)
+(setq show-trailing-whitespace t)
+
+(require 'command-frequency)
+(command-frequency-table-load)
+(command-frequency-mode 1)
+(command-frequency-autosave-mode 1)
+
 
 (load-file "~/.emacs.d/.keys")
 
