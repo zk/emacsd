@@ -397,6 +397,9 @@
   ;; If there is more than one, they won't work right.
  )
 
+(custom-set-variables
+ '(magit-git-executable "/opt/local/bin/git"))
+
 ;; Clojure run test
 (defun run-tests-for-namespace (ns)
   )
