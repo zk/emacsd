@@ -118,7 +118,6 @@ With a prefix argument, insert a newline above the current line."
 (add-hook 'fundamental-mode-hook 'my-tab-fix)
 (add-hook 'clojure-mode-hook 'my-tab-fix)
 ;;(add-hook 'ruby-mode 'my-tab-fix)
-;;(add-hook 'rhtml-mode 'my-tab-fix)
 
 (define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
 (define-key clojure-mode-map (kbd "s-t") 'slime-clojure-run-tests)
@@ -171,9 +170,9 @@ With a prefix argument, insert a newline above the current line."
 ;; Paredit
 (define-key paredit-mode-map (kbd "C-w") 'paredit-backward-kill-word)
 
-(define-key rhtml-mode-map (kbd "<RET>") 'newline-and-indent)
-(define-key ruby-mode-map (kbd "<RET>") 'newline-and-indent)
-;(define-key css-mode-map (kbd "<RET>") 'newline-and-indent)
+(define-key ruby-mode-map (kbd "<RET>") 'reindent-then-newline-and-indent)
+;;(define-key rinari-mode-map (kbd "<RET>") 'newline-and-indent)
+(define-key global-map (kbd "RET") 'reindent-then-newline-and-indent)
 
 (defun run-ruby-file ()
   (interactive)
@@ -199,7 +198,7 @@ With a prefix argument, insert a newline above the current line."
 (global-set-key (kbd "s-p") 'ecb-toggle-ecb-windows)
 (global-set-key (kbd "s-o") 'ecb-toggle-layout)
 
-(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "C-w") 'sane-backward-kill-word)
 
 (global-set-key (kbd "M-p") 'fill-paragraph)
 

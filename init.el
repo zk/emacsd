@@ -31,12 +31,29 @@
 (require 'idle-highlight)
 (require 'nxml-mode)
 (require 'paredit)
-;;(require 'yasnippet-bundle)
+(require 'yasnippet-bundle)
 (require 'clojure-mode)
 (require 'nav)
 (require 'sunrise-commander)
+(require 'autopair)
 
-;; TODELETE: (require 'project-buffer-mode) 
+
+(autopair-global-mode)
+
+(defun sane-backward-kill-word ()
+  (interactive)
+  (with-syntax-table
+      (let ((table (make-syntax-table)))
+        (modify-syntax-entry ?\  "w" table)
+        (modify-syntax-entry ?\n  "w" table)
+        (modify-syntax-entry ?\r  "w" table)
+        table)
+    (backward-kill-word 1)))
+
+
+
+ asdfasdf asdfasdf asdfasdfa
+
 
 ;; Appearance
 ;;; Transparency
@@ -425,6 +442,9 @@
 (command-frequency-table-load)
 (command-frequency-mode 1)
 (command-frequency-autosave-mode 1)
+
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 
 (load-file "~/.emacs.d/.keys")
