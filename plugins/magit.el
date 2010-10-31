@@ -66,7 +66,7 @@
   :prefix "magit-"
   :group 'tools)
 
-(defcustom magit-git-executable "git"
+(defcustom magit-git-executable "/opt/local/bin/git"
   "The name of the Git executable."
   :group 'magit
   :type 'string)

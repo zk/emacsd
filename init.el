@@ -36,7 +36,7 @@
 (require 'nav)
 (require 'sunrise-commander)
 (require 'autopair)
-
+(require 'magit)
 
 (autopair-global-mode)
 
@@ -44,16 +44,13 @@
   (interactive)
   (with-syntax-table
       (let ((table (make-syntax-table)))
-        (modify-syntax-entry ?\  "w" table)
+        (modify-syntax-entry ?\  "-" table)
         (modify-syntax-entry ?\n  "w" table)
         (modify-syntax-entry ?\r  "w" table)
+        (modify-syntax-entry ?\(  "w" table)
+        (modify-syntax-entry ?\?  "w" table)
         table)
     (backward-kill-word 1)))
-
-
-
- asdfasdf asdfasdf asdfasdfa
-
 
 ;; Appearance
 ;;; Transparency

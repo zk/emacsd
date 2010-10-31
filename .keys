@@ -213,3 +213,15 @@ With a prefix argument, insert a newline above the current line."
 (global-set-key (kbd "C-c C-k") 'kill-this-buffer)
 (global-set-key (kbd "C-c k") 'kill-this-buffer)
 
+(defun backward-kill-line (arg) 
+  "Delete the linefeed and carriage return of the previous line when point is at the beginning of the current line"
+  (interactive "p")
+  (let ((prev-char (char-before (point)))
+        (at-beginning-of-line nil))
+    (if (and (characterp prev-char)
+             (or (char-equal prev-char 10)
+                 (char-equal prev-char 13)))
+        (backward-delete-char 1)
+      (kill-line 0))))
+
+(global-set-key (kbd "C-s-<clear>") 'backward-kill-line)
