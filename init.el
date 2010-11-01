@@ -47,7 +47,7 @@
         (modify-syntax-entry ?\  "-" table)
         (modify-syntax-entry ?\n  "w" table)
         (modify-syntax-entry ?\r  "w" table)
-        (modify-syntax-entry ?\(  "w" table)
+        (modify-syntax-entry ?\(  "-" table)
         (modify-syntax-entry ?\?  "w" table)
         table)
     (backward-kill-word 1)))
@@ -445,6 +445,15 @@
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+;; Used to pull the OS's shell path for use in emacs
+(defun set-exec-path-from-shell-PATH () 
+  (interactive) 
+  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))) 
+    (setenv "PATH" path-from-shell) 
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(set-exec-path-from-shell-PATH)
 
 
 (load-file "~/.emacs.d/.keys")
