@@ -121,6 +121,7 @@ With a prefix argument, insert a newline above the current line."
 
 (define-key clojure-mode-map (kbd "s-i") 'slime-inspect)
 (define-key clojure-mode-map (kbd "s-t") 'slime-clojure-run-tests)
+(define-key clojure-mode-map (kbd "k") 'self-insert-command)
 ;;(define-key clojure-mode-map (kbd "C-s-<clear>") 'kill-sexp)
 
 
@@ -225,3 +226,4 @@ With a prefix argument, insert a newline above the current line."
       (kill-line 0))))
 
 (global-set-key (kbd "C-s-<clear>") 'backward-kill-line)
+

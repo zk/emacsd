@@ -1,5 +1,5 @@
 
-(defvar emacs-root  "~/.emacs.d/") ;; location of the emacs configuration source code tree
+(defvar emacs-root  "~/.emacs.d/") ;; location of the emacs configuration source code tree:
 
 (defun append-to-load-path (path-element)
   (add-to-list 'load-path (concat emacs-root path-element)))
@@ -38,7 +38,7 @@
 (require 'autopair)
 (require 'magit)
 
-(autopair-global-mode)
+;;(autopair-global-mode)
 
 (defun sane-backward-kill-word ()
   (interactive)
@@ -212,14 +212,15 @@
      (describe 'defun) 
      (it 'defun)
      (do-it 'defun)))
-;(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
+
+(add-hook 'clojure-mode-hook 'yas/minor-mode-on)
 ;; }
 
 ;; Org Stuff {
 (require 'org-install)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
+;;(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+;;(define-key global-map "\C-cl" 'org-store-link)
+;;(define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
 (setq journal-root-dir "/Users/zkim/Dropbox/org/")
@@ -238,20 +239,20 @@
 ;; }
 
 ;;; YA Snippet {{{
-;(setq yas/root-directory "~/.emacs.d/snippets/")
-;(yas/load-directory yas/root-directory)
+(setq yas/root-directory "~/.emacs.d/snippets/")
+(yas/load-directory yas/root-directory)
 
-;; (defun yas/advise-indent-function (function-symbol)
-;;   (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
-;;            ,(format
-;;              "Try to expand a snippet before point, then call `%s' as usual"
-;;              function-symbol)
-;;            (let ((yas/fallback-behavior nil))
-;;              (unless (and (interactive-p)
-;;                           (yas/expand))
-;;                ad-do-it)))))
+(defun yas/advise-indent-function (function-symbol)
+  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
+           ,(format
+             "Try to expand a snippet before point, then call `%s' as usual"
+             function-symbol)
+           (let ((yas/fallback-behavior nil))
+             (unless (and (interactive-p)
+                          (yas/expand))
+               ad-do-it)))))
 
-;; (yas/advise-indent-function 'indent-or-expand)
+(yas/advise-indent-function 'indent-or-expand)
 
 ;; (defun clojure-namespace-clean-extension (path-part)
 ;;   (car (split-string path-part "\\." t)))
@@ -356,6 +357,8 @@
 (add-hook 'rhtml-mode-hook
      	  (lambda () (rinari-launch)))
 
+(add-hook 'rhtml-mode-hook #'(lambda () (autopair-mode)))
+(add-hook 'ruby-mode-hook #'(lambda () (autopair-mode)))
 (setq rinari-tags-file-name "TAGS")
 
 (require 'markdown-mode)
@@ -453,8 +456,9 @@
     (setenv "PATH" path-from-shell) 
     (setq exec-path (split-string path-from-shell path-separator))))
 
-(set-exec-path-from-shell-PATH)
+;;(set-exec-path-from-shell-PATH)
 
+(setq slime-redirect-inferior-output nil)
 
 (load-file "~/.emacs.d/.keys")
 
