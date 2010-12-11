@@ -124,6 +124,8 @@ With a prefix argument, insert a newline above the current line."
 (define-key clojure-mode-map (kbd "k") 'self-insert-command)
 ;;(define-key clojure-mode-map (kbd "C-s-<clear>") 'kill-sexp)
 
+;;(define-key css-mode-map (kbd "C-k") 'paredit-kill)
+
 
 (global-set-key (kbd "s-/") 'indent-or-expand)
 
@@ -214,6 +216,7 @@ With a prefix argument, insert a newline above the current line."
 (global-set-key (kbd "C-c C-k") 'kill-this-buffer)
 (global-set-key (kbd "C-c k") 'kill-this-buffer)
 
+
 (defun backward-kill-line (arg) 
   "Delete the linefeed and carriage return of the previous line when point is at the beginning of the current line"
   (interactive "p")
@@ -227,3 +230,4 @@ With a prefix argument, insert a newline above the current line."
 
 (global-set-key (kbd "C-s-<clear>") 'backward-kill-line)
 
+(global-set-key (kbd "s-n") 'yas/expand)

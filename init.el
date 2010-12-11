@@ -16,6 +16,8 @@
 
 (nconc same-window-buffer-names '("*Apropos*" "*Buffer List*" "*Help*" "*anything*"))
 
+(add-to-list 'package-archives '("technomancy" . "http://repo.technomancy.us/emacs/"))
+
 ;; Imports
 (require 'color-theme)
 (require 'javadoc-help)
@@ -31,12 +33,18 @@
 (require 'idle-highlight)
 (require 'nxml-mode)
 (require 'paredit)
-(require 'yasnippet-bundle)
+(require 'yasnippet)
 (require 'clojure-mode)
+(require 'clojure-test-mode)
 (require 'nav)
 (require 'sunrise-commander)
 (require 'autopair)
 (require 'magit)
+(require 'auto-complete-config)
+(require 'coffee-mode)
+
+;(add-to-list 'package-archives "http://repo.technomancy.us/emacs")
+
 
 ;;(autopair-global-mode)
 
@@ -207,6 +215,8 @@
 (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)   ; Eldoc (lisp param list)
 (add-hook 'clojure-mode-hook 'idle-highlight)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(add-hook 'clojure-mode-hook 'linum-mode)
+;(add-hook 'clojure-mode-hook 'clojure-test-mode)
 (eval-after-load 'clojure-mode
   '(define-clojure-indent 
      (describe 'defun) 
@@ -253,6 +263,9 @@
                ad-do-it)))))
 
 (yas/advise-indent-function 'indent-or-expand)
+
+(add-hook 'js-mode 'yas/minor-mode-on)
+
 
 ;; (defun clojure-namespace-clean-extension (path-part)
 ;;   (car (split-string path-part "\\." t)))
@@ -359,6 +372,7 @@
 
 (add-hook 'rhtml-mode-hook #'(lambda () (autopair-mode)))
 (add-hook 'ruby-mode-hook #'(lambda () (autopair-mode)))
+(add-hook 'js-mode-hook #'(lambda () (autopair-mode)))
 (setq rinari-tags-file-name "TAGS")
 
 (require 'markdown-mode)
@@ -446,8 +460,8 @@
 (command-frequency-mode 1)
 (command-frequency-autosave-mode 1)
 
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;;(autoload 'js2-mode "js2" nil t)
+;;(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 ;; Used to pull the OS's shell path for use in emacs
 (defun set-exec-path-from-shell-PATH () 
@@ -460,5 +474,15 @@
 
 (setq slime-redirect-inferior-output nil)
 
-(load-file "~/.emacs.d/.keys")
+;; Autocomplete
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/plugins/ac-dict")
+(ac-config-default)
 
+(defun coffee-custom ()
+  "coffee-mode-hook"
+ (set (make-local-variable 'tab-width) 2))
+
+(add-hook 'coffee-mode-hook
+  '(lambda() (coffee-custom)))
+
+(load-file "~/.emacs.d/.keys")
